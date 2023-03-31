@@ -17,3 +17,4 @@ require (
 	github.com/unknwon/goconfig v0.0.0-20190425194916-3dba17dd7b9e
 	goftp.io/server/v2 v2.0.0
 )
+

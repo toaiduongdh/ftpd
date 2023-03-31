@@ -5,26 +5,28 @@ import (
 	"fmt"
 	"os"
 
-	"goftp.io/ftpd/web"
-
 	ldbperm "gitea.com/goftp/leveldb-perm"
 	"github.com/lunny/log"
 	_ "github.com/shurcooL/vfsgen"
 	"github.com/syndtr/goleveldb/leveldb"
 	ldbauth "goftp.io/ftpd/modules/ldbauth"
+	"goftp.io/ftpd/web"
 	"goftp.io/server/v2"
 	"goftp.io/server/v2/driver/file"
 	minio_driver "goftp.io/server/v2/driver/minio"
 )
 
 var (
-	version = "v0.3.0"
-	cfgPath string
+	version     = "v0.3.0"
+	cfgPath     string
+	passivePort string
 )
 
 func main() {
 	flag.StringVar(&cfgPath, "config", "",
 		"config file path, default is config.ini")
+	flag.StringVar(&passivePort, "passivePort", "1234-1234",
+		"single passive port")
 	flag.Parse()
 
 	if err := initConfig(); err != nil {
@@ -114,6 +116,7 @@ func main() {
 	opt.KeyFile = serv.KeyFile
 	opt.CertFile = serv.CertFile
 	opt.ExplicitFTPS = opt.TLS
+	opt.PassivePorts = passivePort
 
 	// start ftp server
 	ftpServer, err := server.NewServer(opt)
