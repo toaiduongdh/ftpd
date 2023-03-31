@@ -6,7 +6,7 @@ import (
 
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/util"
-	"goftp.io/ftpd/web"
+	"github.com/toaiduongdh/ftpd/web"
 	"goftp.io/server/v2"
 )
 

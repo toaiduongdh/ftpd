@@ -3,9 +3,6 @@ package web
 import (
 	"time"
 
-	"goftp.io/ftpd/modules/public"
-	"goftp.io/ftpd/modules/templates"
-
 	"gitea.com/lunny/tango"
 	"gitea.com/tango/binding"
 	"gitea.com/tango/flash"
@@ -13,6 +10,8 @@ import (
 	"gitea.com/tango/session"
 	"gitea.com/tango/xsrf"
 	"github.com/syndtr/goleveldb/leveldb"
+	"github.com/toaiduongdh/ftpd/modules/public"
+	"github.com/toaiduongdh/ftpd/modules/templates"
 	"goftp.io/server/v2"
 )
 
@@ -26,11 +25,11 @@ const (
 var (
 	DB        UserDB
 	Perm      server.Perm
-	Driver server.Driver
+	Driver    server.Driver
 	adminUser string
 )
 
-type auther interface {
+type author interface {
 	AskLogin() bool
 	IsLogin() bool
 	LoginUserId() string
@@ -38,7 +37,7 @@ type auther interface {
 
 func auth() tango.HandlerFunc {
 	return func(ctx *tango.Context) {
-		if a, ok := ctx.Action().(auther); ok {
+		if a, ok := ctx.Action().(author); ok {
 			if a.AskLogin() {
 				if !a.IsLogin() {
 					ctx.Redirect("/login")

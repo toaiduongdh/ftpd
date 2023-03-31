@@ -10,11 +10,10 @@ import (
 	"gitea.com/tango/renders"
 	"gitea.com/tango/session"
 	"gitea.com/tango/xsrf"
-
 	"goftp.io/server/v2"
 )
 
-var _ auther = new(BaseAction)
+// var _ author = new(BaseAction)
 
 type BaseAction struct {
 	renders.Renderer
@@ -152,8 +151,7 @@ func (d *DownAction) Get() error {
 		return err
 	}
 
-	_, rd, err := Driver.GetFile(&server.Context{
-	}, p, 0)
+	_, rd, err := Driver.GetFile(&server.Context{}, p, 0)
 	if err != nil {
 		return err
 	}
