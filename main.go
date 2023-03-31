@@ -9,8 +9,7 @@ import (
 	"github.com/lunny/log"
 	_ "github.com/shurcooL/vfsgen"
 	"github.com/syndtr/goleveldb/leveldb"
-	ldbauth "github.com/toaiduongdh/ftpd/modules/ldbauth"
-	"github.com/toaiduongdh/ftpd/web"
+	// "github.com/toaiduongdh/ftpd/web"
 	"goftp.io/server/v2"
 	"goftp.io/server/v2/driver/file"
 	minio_driver "goftp.io/server/v2/driver/minio"
@@ -44,10 +43,11 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-
-	var auth = &ldbauth.LDBAuth{
-		DB: db,
+	var auth = &server.SimpleAuth{
+		Name:     admin,
+		Password: pass,
 	}
+
 	var perm server.Perm
 	if permType == "leveldb" {
 		perm = ldbperm.NewLDBPerm(db, "root", "root", os.ModePerm)
@@ -95,14 +95,14 @@ func main() {
 	}
 
 	// start web manage UI
-	if webCfg.Enabled {
-		web.DB = auth
-		web.Perm = perm
-		web.Driver = driver
+	// if webCfg.Enabled {
+	// 	web.DB = auth
+	// 	web.Perm = perm
+	// 	web.Driver = driver
 
-		go web.Web(webCfg.Listen, "static", "templates", admin, pass,
-			webCfg.TLS, webCfg.CertFile, webCfg.KeyFile)
-	}
+	// 	go web.Web(webCfg.Listen, "static", "templates", admin, pass,
+	// 		webCfg.TLS, webCfg.CertFile, webCfg.KeyFile)
+	// }
 
 	opt := &server.Options{
 		Name:   serv.Name,
