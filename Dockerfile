@@ -4,7 +4,6 @@
 
 FROM golang:1.20-buster
 
-RUN go install github.com/toaiduongdh/ftpd@962762656db45053192fc66af4c6d7b2610a5c01
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -18,5 +17,9 @@ RUN apt-get update \
         kafkacat \
     && apt-get autoremove -y \
     && apt-get autoclean -y
+
 COPY config.sample.ini /config/config.ini
+
+
+RUN go install github.com/toaiduongdh/ftpd@d88eeb6ce51347ecc6f5dcf3dc0c3d15827a5815
 

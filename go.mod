@@ -10,6 +10,7 @@ require (
 	gitea.com/tango/renders v0.0.0-20191027160057-78fc56203eb4
 	gitea.com/tango/session v0.0.0-20190606020146-89f560e05167
 	gitea.com/tango/xsrf v0.0.0-20190606015726-fb1b2fb84238
+	github.com/Shopify/sarama v1.38.1
 	github.com/lunny/log v0.0.0-20160921050905-7887c61bf0de
 	github.com/shurcooL/httpfs v0.0.0-20190707220628-8d4bc4ba7749 // indirect
 	github.com/shurcooL/vfsgen v0.0.0-20181202132449-6a9ea43bcacd
