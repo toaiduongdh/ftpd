@@ -21,6 +21,6 @@ RUN apt-get update \
 COPY config.sample.ini /config/config.ini
 
 
-RUN go install github.com/toaiduongdh/ftpd@c68d11a33b4d764c069180b547d78d6e4027f55b
-RUN go install github.com/toaiduongdh/ftpd/tools@c68d11a33b4d764c069180b547d78d6e4027f55b
+RUN go install github.com/toaiduongdh/ftpd@cce8c9c3e914de159eb7e1491d2d57ec49d30b69
+RUN go install github.com/toaiduongdh/ftpd/tools@cce8c9c3e914de159eb7e1491d2d57ec49d30b69
 
