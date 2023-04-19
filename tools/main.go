@@ -28,6 +28,7 @@ func main() {
 	// Create Kafka producer
 	config := sarama.NewConfig()
 	config.Net.TLS.Enable = *useTls
+	config.Producer.Return.Successes = true
 	producer, err := sarama.NewSyncProducer([]string{*broker}, config)
 	if err != nil {
 		fmt.Printf("Failed to create Kafka producer: %v\n", err)
