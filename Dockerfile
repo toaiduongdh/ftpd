@@ -21,6 +21,6 @@ RUN apt-get update \
 COPY config.sample.ini /config/config.ini
 
 
-RUN go install github.com/toaiduongdh/ftpd@cce8c9c3e914de159eb7e1491d2d57ec49d30b69
-RUN go install github.com/toaiduongdh/ftpd/tools@cce8c9c3e914de159eb7e1491d2d57ec49d30b69
+RUN go install github.com/toaiduongdh/ftpd@f5f9d754185ee9008566833bda4e6502a4504caf
+RUN go install github.com/toaiduongdh/ftpd/kafkatools@f5f9d754185ee9008566833bda4e6502a4504caf
 
