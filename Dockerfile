@@ -22,5 +22,5 @@ COPY config.sample.ini /config/config.ini
 
 
 RUN go install github.com/toaiduongdh/ftpd@f5f9d754185ee9008566833bda4e6502a4504caf
-RUN go install github.com/toaiduongdh/ftpd/kafkatools@f5f9d754185ee9008566833bda4e6502a4504caf
+RUN go install github.com/toaiduongdh/ftpd/kafkatools@55efa53c8f07d58b8c87a1246e27f3f24fe24e23
 

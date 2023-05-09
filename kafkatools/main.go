@@ -71,7 +71,7 @@ func main() {
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		parts := strings.Split(scanner.Text(), ":")
+		parts := strings.SplitN(scanner.Text(), ":", 2)
 
 		payload := parts[1]
 		if *decodeBase64 {
