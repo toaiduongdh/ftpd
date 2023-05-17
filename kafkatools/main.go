@@ -7,6 +7,7 @@ import (
 	"encoding/base64"
 	"flag"
 	"fmt"
+	"log"
 	"os"
 	"strings"
 
@@ -24,6 +25,7 @@ func main() {
 	password := flag.String("password", "", "")
 	useSasl := flag.Bool("sasl", false, "")
 	decodeBase64 := flag.Bool("base64decode", false, "")
+	sarama.Logger = log.New(os.Stdout, "[sarama] ", log.LstdFlags)
 
 	flag.Parse()
 
@@ -43,7 +45,10 @@ func main() {
 			panic(err)
 		}
 		certPool := x509.NewCertPool()
-		certPool.AppendCertsFromPEM(raw)
+		ok := certPool.AppendCertsFromPEM(raw)
+		if !ok {
+			panic("failed appending certs from pem somehow")
+		}
 		tlsConfig := &tls.Config{RootCAs: certPool}
 		config.Net.TLS.Config = tlsConfig
 	}
