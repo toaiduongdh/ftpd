@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"github.com/Shopify/sarama"
+	"github.com/schollz/progressbar/v3"
 )
 
 func main() {
@@ -76,8 +77,15 @@ func main() {
 	scanner := bufio.NewScanner(file)
 
 	msges := []*sarama.ProducerMessage{}
+	stat, err := file.Stat()
+	if err != nil {
+		panic(err)
+	}
+	fileSize := stat.Size()
+	bar := progressbar.DefaultBytes(fileSize, "published bytes")
 	for scanner.Scan() {
 		parts := strings.SplitN(scanner.Text(), ":", 2)
+		bar.Add(len(scanner.Bytes()))
 
 		payload := parts[1]
 		if *decodeBase64 {
@@ -109,6 +117,7 @@ func main() {
 			os.Exit(1)
 		}
 	}
+	bar.Finish()
 
 	if err := scanner.Err(); err != nil {
 		fmt.Printf("Failed to read input file: %v\n", err)
