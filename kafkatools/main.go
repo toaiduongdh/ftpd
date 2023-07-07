@@ -7,7 +7,6 @@ import (
 	"encoding/base64"
 	"flag"
 	"fmt"
-	"log"
 	"os"
 	"strings"
 
@@ -25,7 +24,7 @@ func main() {
 	password := flag.String("password", "", "")
 	useSasl := flag.Bool("sasl", false, "")
 	decodeBase64 := flag.Bool("base64decode", false, "")
-	sarama.Logger = log.New(os.Stdout, "[sarama] ", log.LstdFlags)
+	batch := flag.Int("batch", 100, "number of msg per batch producing")
 
 	flag.Parse()
 
@@ -75,6 +74,8 @@ func main() {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
+
+	msges := []*sarama.ProducerMessage{}
 	for scanner.Scan() {
 		parts := strings.SplitN(scanner.Text(), ":", 2)
 
@@ -91,12 +92,22 @@ func main() {
 			Key:   sarama.StringEncoder(parts[0]),
 			Value: sarama.ByteEncoder(payload),
 		}
-		partition, offset, err := producer.SendMessage(message)
+		msges = append(msges, message)
+		if len(msges) == *batch {
+			err = producer.SendMessages(msges)
+			if err != nil {
+				fmt.Printf("Failed to publish message: %v\n", err)
+				os.Exit(1)
+			}
+			msges = msges[:0]
+		}
+	}
+	if len(msges) > 0 {
+		err = producer.SendMessages(msges)
 		if err != nil {
 			fmt.Printf("Failed to publish message: %v\n", err)
 			os.Exit(1)
 		}
-		fmt.Printf("Message published to partition %d, offset %d\n", partition, offset)
 	}
 
 	if err := scanner.Err(); err != nil {
